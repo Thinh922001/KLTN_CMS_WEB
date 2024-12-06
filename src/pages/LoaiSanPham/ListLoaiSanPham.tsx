@@ -1,36 +1,42 @@
+import { ICategory, ICategoryUpdate } from '@/Types/Category';
+import { Eye, Loader, Paperclip, Plus, Save, Trash } from 'lucide-react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  delete_category,
+  get_all_category,
+  update_category,
+  upload_category_img,
+} from '../../api/category';
 import Breadcrumb from '../../components/Breadcrumb';
+import ModalBox from '../../components/ModalBox';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '../../components/ui/table';
 import useFetch from '../../hooks/useFetch';
-import {
-  delete_category,
-  get_all_category,
-  get_category_by_id,
-  update_category,
-} from '../../api/category';
 import { toastMessage } from '../../utils/toastHelper';
-import { Eye, Loader, Plus, Save, Trash } from 'lucide-react';
-import { ICategory, ICategoryUpdate } from '@/Types/Category';
-import ModalBox from '../../components/ModalBox';
-import { useNavigate } from 'react-router-dom';
 const ListLoaiSanPham = (): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
   const [stateApiAnorther, handleStateApiAnorther] = useFetch();
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = React.useState<boolean>(false);
   const [category, setCategory] = React.useState<ICategory | null>(null);
+  const [imageChange, setImage] = React.useState<File | null>(null);
   const navigate = useNavigate();
   const [listLoaiSanPham, setListLoaiSanPham] = React.useState<
     ICategory[] | null
   >(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
 
   const handleOpenModal = (cate: ICategory) => {
     setOpenModal(true);
@@ -40,6 +46,21 @@ const ListLoaiSanPham = (): JSX.Element => {
   const handleOpenModelDelete = (cate: ICategory) => {
     setOpenModalDelete(true);
     setCategory(cate);
+  };
+
+  const handleUpdateImg = () => {
+    handleStateApiAnorther(async () => {
+      if (!imageChange) return;
+      if (!category) return;
+      const res = await upload_category_img(category.id, imageChange);
+      if (res.statusCode == 200) {
+        setOpenModal(false);
+        toastMessage(res.message, 'success');
+        return;
+      } else {
+        toastMessage(res.message, 'error');
+      }
+    });
   };
 
   const handleSubmitSave = () => {
@@ -55,7 +76,13 @@ const ListLoaiSanPham = (): JSX.Element => {
         cateId: category.id,
         name: category.name,
       };
-      const res = await update_category(record);
+      const [res] = await Promise.all([
+        update_category(record),
+        imageChange
+          ? upload_category_img(category.id, imageChange)
+          : Promise.resolve(),
+      ]);
+
       if (res.statusCode == 200) {
         setOpenModal(false);
         toastMessage(res.message, 'success');
@@ -73,7 +100,7 @@ const ListLoaiSanPham = (): JSX.Element => {
       const res = await delete_category(category.id);
       if (res.statusCode == 200) {
         setOpenModalDelete(false);
-        toastMessage("Xóa thành công", 'success');
+        toastMessage('Xóa thành công', 'success');
         return;
       } else {
         toastMessage(res.message, 'error');
@@ -93,6 +120,13 @@ const ListLoaiSanPham = (): JSX.Element => {
       }
     });
   }, [stateApiAnorther.loading]);
+
+  React.useEffect(() => {
+    if (openModal) {
+      setImage(null);
+    }
+  }, [openModal]);
+
   return (
     <>
       <Breadcrumb pageName="Danh sách loại sản phẩm" />
@@ -111,6 +145,7 @@ const ListLoaiSanPham = (): JSX.Element => {
             <TableRow>
               <TableHead className="w-[100px]"># ID</TableHead>
               <TableHead>Tên loại sản phẩm</TableHead>
+              <TableHead>Ảnh</TableHead>
               <TableHead>Hành động</TableHead>
             </TableRow>
           </TableHeader>
@@ -141,6 +176,13 @@ const ListLoaiSanPham = (): JSX.Element => {
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell>{item.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <img
+                      src={item.img || ''}
+                      alt=""
+                      className="w-16 h-16 rounded-sm object-cover"
+                    />
+                  </TableCell>
                   <TableCell className="text-right">
                     <div className="flex gap-2 items-center">
                       <span
@@ -193,6 +235,28 @@ const ListLoaiSanPham = (): JSX.Element => {
                 type="text"
                 className="px-2 py-1 border border-black rounded-md"
               />
+            </div>
+            <div className="flex items-center justify-center relative">
+              <img
+                className=" w-24 h-24 object-cover"
+                src={
+                  imageChange
+                    ? `${URL.createObjectURL(imageChange)}`
+                    : category?.img
+                }
+              />
+              <div className="flex gap-2 items-center justify-center absolute bottom-0 left-[56%] ">
+                <label className="flex gap-2 items-center cursor-pointer">
+                  <span className="mt-2 text-base leading-normal">Sửa ảnh</span>
+                  <Paperclip className="translate-y-1" />
+                  <input
+                    onChange={handleImageChange}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </label>
+              </div>
             </div>
           </div>
           <div>
