@@ -6,26 +6,34 @@ const Chart = lazy(() => import('../pages/Chart'));
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
 const Profile = lazy(() => import('../pages/Profile'));
-const Settings = lazy(() => import('../pages/Settings'));
+const Settings = lazy(() => import('../pages/Profile'));
 const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
-const ListNhanVien = lazy(() => import('../pages/NhanVien/ListNhanVien'))
-const AddNhanVien = lazy(() => import('../pages/NhanVien/AddNhanVien'))
-const ListSanPham = lazy(() => import('../pages/SanPham/ListSanPham'))
-const AddSanPham = lazy(() => import('../pages/SanPham/AddSanPham'))
-const ListNhanHang = lazy(() => import('../pages/NhanHang/ListNhanHang'))
-const AddNhanHang = lazy(() => import('../pages/NhanHang/AddNhanHang'))
-const ListLoaiSanPham = lazy(() => import('../pages/LoaiSanPham/ListLoaiSanPham'))
-const AddLoaiSanPham = lazy(() => import('../pages/LoaiSanPham/AddLoaiSanPham'))
-const ListHoaDon = lazy(() => import('../pages/HoaDon/ListHoaDon'))
-const AddHoaDon = lazy(() => import('../pages/HoaDon/AddHoaDon'))
-const ListMaGiamGia = lazy(() => import('../pages/MaGiamGia/ListMaGiamGia'))
-const AddMaGiamGia = lazy(() => import('../pages/MaGiamGia/AddMaGiamGia'))
-const ChiTietSanPham = lazy(() => import('../pages/SanPham/ChiTietSanPham'))
-const ListChiTietSanPham = lazy(() => import('../pages/ChiTietSanPham/ListChiTietSanPham'))
-const ListKhachHang = lazy(() => import('../pages/KhachHang/ListKhachHang'))
-const KhachHangChiTiet = lazy(() => import('../pages/KhachHang/KhachHangChiTiet'))
+const ListNhanVien = lazy(() => import('../pages/NhanVien/ListNhanVien'));
+const AddNhanVien = lazy(() => import('../pages/NhanVien/AddNhanVien'));
+const ListSanPham = lazy(() => import('../pages/SanPham/ListSanPham'));
+const AddSanPham = lazy(() => import('../pages/SanPham/AddSanPham'));
+const ListNhanHang = lazy(() => import('../pages/NhanHang/ListNhanHang'));
+const AddNhanHang = lazy(() => import('../pages/NhanHang/AddNhanHang'));
+const ListLoaiSanPham = lazy(
+  () => import('../pages/LoaiSanPham/ListLoaiSanPham'),
+);
+const AddLoaiSanPham = lazy(
+  () => import('../pages/LoaiSanPham/AddLoaiSanPham'),
+);
+const ListHoaDon = lazy(() => import('../pages/HoaDon/ListHoaDon'));
+const AddHoaDon = lazy(() => import('../pages/HoaDon/AddHoaDon'));
+const ListMaGiamGia = lazy(() => import('../pages/MaGiamGia/ListMaGiamGia'));
+const AddMaGiamGia = lazy(() => import('../pages/MaGiamGia/AddMaGiamGia'));
+const ChiTietSanPham = lazy(() => import('../pages/SanPham/ChiTietSanPham'));
+const ListChiTietSanPham = lazy(
+  () => import('../pages/ChiTietSanPham/ListChiTietSanPham'),
+);
+const ListKhachHang = lazy(() => import('../pages/KhachHang/ListKhachHang'));
+const KhachHangChiTiet = lazy(
+  () => import('../pages/KhachHang/KhachHangChiTiet'),
+);
 const coreRoutes = [
   {
     path: '/',
@@ -141,19 +149,22 @@ const coreRoutes = [
     path: '/sanpham/:id/:brand_id/:cate_id',
     title: 'Chi Tiết Sản phẩm',
     component: ChiTietSanPham,
-  },{
+  },
+  {
     path: '/chitietsanpham/:product_id',
     title: 'Chi Tiết Sản phẩm',
     component: ListChiTietSanPham,
-  },{
+  },
+  {
     path: '/user',
     title: 'Khách Hàng',
     component: ListKhachHang,
-  },{
+  },
+  {
     path: '/user/:id',
     title: 'Chi Tiết Khách Hàng',
     component: KhachHangChiTiet,
-  }
+  },
 ];
 
 const routes = [...coreRoutes];
