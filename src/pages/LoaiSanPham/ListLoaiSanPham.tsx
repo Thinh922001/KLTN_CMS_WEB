@@ -48,21 +48,6 @@ const ListLoaiSanPham = (): JSX.Element => {
     setCategory(cate);
   };
 
-  const handleUpdateImg = () => {
-    handleStateApiAnorther(async () => {
-      if (!imageChange) return;
-      if (!category) return;
-      const res = await upload_category_img(category.id, imageChange);
-      if (res.statusCode == 200) {
-        setOpenModal(false);
-        toastMessage(res.message, 'success');
-        return;
-      } else {
-        toastMessage(res.message, 'error');
-      }
-    });
-  };
-
   const handleSubmitSave = () => {
     handleStateApiAnorther(async () => {
       if (!category) {

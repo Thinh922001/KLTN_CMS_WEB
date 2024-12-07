@@ -1,12 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
 import { Eye, LoaderCircle, Lock, Mail } from 'lucide-react';
-import { IAuth, ILogin } from '../../Types/Auth';
 import React from 'react';
-import useFetch from '../../hooks/useFetch';
+import { useNavigate } from 'react-router-dom';
 import { apiLogin } from '../../api/auth';
-import toast from 'react-hot-toast';
+import useFetch from '../../hooks/useFetch';
+import { IAuth, ILogin } from '../../Types/Auth';
 import { IResponseApi } from '../../Types/Response';
 import { toastMessage } from '../../utils/toastHelper';
 
