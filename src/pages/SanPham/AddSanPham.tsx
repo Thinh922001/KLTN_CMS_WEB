@@ -1,6 +1,7 @@
 import { get_all_brand } from '@/api/brand';
 import { get_all_category } from '@/api/category';
 import { create_product } from '@/api/product';
+import VariantForm from '@/components/VariantForm';
 import useFetch from '@/hooks/useFetch';
 import { IBrand } from '@/Types/Brand';
 import { ICategory } from '@/Types/Category';
@@ -327,16 +328,18 @@ const AddSanPham = (): JSX.Element => {
                         onChange={(e) =>
                           setProductAdd({
                             ...productAdd,
-                            variants: productAdd?.variants?.map((item, index) => {
-                              if (item.name === "size") {
-                                return {
-                                  ...item,
-                                  images: e.target.value.split(', '),
-                                };
-                              }
-                              return item;
-                            }),
-                            })
+                            variants: productAdd?.variants?.map(
+                              (item, index) => {
+                                if (item.name === 'size') {
+                                  return {
+                                    ...item,
+                                    images: e.target.value.split(', '),
+                                  };
+                                }
+                                return item;
+                              },
+                            ),
+                          })
                         }
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
@@ -349,7 +352,7 @@ const AddSanPham = (): JSX.Element => {
                             key={index}
                             className="bg-black text-white px-2 py-1 text-sm rounded-full"
                           >
-                            {item} 
+                            {item}
                           </span>
                         ))}
                       </div>
@@ -359,15 +362,18 @@ const AddSanPham = (): JSX.Element => {
                         onChange={(e) =>
                           setProductAdd({
                             ...productAdd,
-                            variants: productAdd?.variants?.map((item, index) => {
-                              if (item.name === "color") {
-                                return {
-                                  ...item,
-                                  options: e.target.value.split(', '),
-                                };
-                              }
-                              return item;
-                            }), })
+                            variants: productAdd?.variants?.map(
+                              (item, index) => {
+                                if (item.name === 'color') {
+                                  return {
+                                    ...item,
+                                    options: e.target.value.split(', '),
+                                  };
+                                }
+                                return item;
+                              },
+                            ),
+                          })
                         }
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
@@ -375,6 +381,8 @@ const AddSanPham = (): JSX.Element => {
                   </div>
                 ))}
               </div>
+
+              <VariantForm />
 
               <button
                 className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray"

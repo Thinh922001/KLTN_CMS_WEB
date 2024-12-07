@@ -1,6 +1,7 @@
 import { get_all_top_selling_static, Mode } from '@/api/statics';
 import useFetch from '@/hooks/useFetch';
 import { IGetTopProductStatics } from '@/Types/Statics';
+import { getValues } from '@/utils/object';
 import { toastMessage } from '@/utils/toastHelper';
 import { Loader } from 'lucide-react';
 import React from 'react';
@@ -129,7 +130,9 @@ const CardTopSelling = (): JSX.Element => {
           list.map((item, index) => (
             <div key={index} className="flex items-center gap-5">
               <b className="text-xl">#{index + 1}</b>
-              <span className="font-semibold">{item.productName} - {item.variationDetail?.size || "?"} - {item.variationDetail?.color}</span>
+              <span className="font-semibold">
+                {item.productName} - {getValues(item.variationDetail)}
+              </span>
               <span>
                 Số lượng bán ra: <b>{item.quantity}</b>
               </span>

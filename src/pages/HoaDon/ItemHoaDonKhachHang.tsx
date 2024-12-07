@@ -1,5 +1,13 @@
 import { get_all_order_by_user } from '@/api/order';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   Table,
   TableBody,
   TableCell,
@@ -15,20 +23,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@radix-ui/react-accordion';
-import { ChevronsDown, Ellipsis, Eye, Loader } from 'lucide-react';
+import { ChevronsDown, Ellipsis, Loader } from 'lucide-react';
 import React from 'react';
 import ItemOrderDetail from './ItemOrderDetail';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import ModelUpdateStatus from './ModelUpdateStatus';
 
 interface Props {
@@ -38,10 +35,10 @@ const ItemHoaDonKhachHang = ({ item }: Props): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
   const [orderList, setOrderList] = React.useState<IOrderUser[]>([]);
   const [openModalId, setOpenModalId] = React.useState<number | null>(null);
-  const [openModalIdUpdate, setOpenModalIdUpdate] = React.useState<number | null>(null);
-  const [status, setStatus] = React.useState<EOrderStatus>(
-    EOrderStatus.ALL,
-  );
+  const [openModalIdUpdate, setOpenModalIdUpdate] = React.useState<
+    number | null
+  >(null);
+  const [status, setStatus] = React.useState<EOrderStatus>(EOrderStatus.ALL);
   const handleOpenModal = (userId: number) => {
     setOpenModalId((prevId) => (prevId === userId ? null : userId));
   };
@@ -57,18 +54,17 @@ const ItemHoaDonKhachHang = ({ item }: Props): JSX.Element => {
     const fetchOrders = async () => {
       const res = await get_all_order_by_user(item.id || 0);
       if (res.statusCode === 200) {
-        if(status === EOrderStatus.ALL){
-          setOrderList(res.data)
-        }else{
+        if (status === EOrderStatus.ALL) {
+          setOrderList(res.data);
+        } else {
           setOrderList(
             res.data.filter((order: IOrderUser) => order.status === status),
           );
-
         }
       }
     };
     handleStateApi(fetchOrders);
-  }, [status,openModalIdUpdate]);
+  }, [status, openModalIdUpdate]);
   return (
     <>
       <TableRow
@@ -115,7 +111,7 @@ const ItemHoaDonKhachHang = ({ item }: Props): JSX.Element => {
                     <option value={EOrderStatus.REFUNDED}>Refunded</option>
                   </select>
                 </div>
-                <div className='min-h-[300px]'>
+                <div className="min-h-[300px]">
                   <Table className="w-full h-full ">
                     <TableRow>
                       <TableHead className="w-[100px]"># ID hóa đơn</TableHead>
@@ -175,14 +171,12 @@ const ItemHoaDonKhachHang = ({ item }: Props): JSX.Element => {
                                     onClose={() => setOpenModalId(null)}
                                   />
                                 )}
-                                {
-                                  openModalIdUpdate === item.id && (
-                                    <ModelUpdateStatus
-                                      orderId={item.id || 0}
-                                      onClose={() => setOpenModalIdUpdate(null)}
-                                    />
-                                  )
-                                }
+                                {openModalIdUpdate === item.id && (
+                                  <ModelUpdateStatus
+                                    orderId={item.id || 0}
+                                    onClose={() => setOpenModalIdUpdate(null)}
+                                  />
+                                )}
                               </div>
                             </TableCell>
                           </TableRow>

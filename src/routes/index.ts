@@ -1,6 +1,5 @@
 import { lazy } from 'react';
 const ECommerce = lazy(() => import('../pages/Dashboard/ECommerce'));
-
 const Calendar = lazy(() => import('../pages/Calendar'));
 const Chart = lazy(() => import('../pages/Chart'));
 const FormElements = lazy(() => import('../pages/Form/FormElements'));

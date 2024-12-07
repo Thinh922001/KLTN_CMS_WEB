@@ -18,7 +18,9 @@ const AddMaGiamGia = (): JSX.Element => {
   });
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
@@ -28,7 +30,11 @@ const AddMaGiamGia = (): JSX.Element => {
         [name]: target.checked,
       });
     } else {
-      const parsedValue = ['discountValue', 'usageLimit', 'validityPeriodInDays'].includes(name)
+      const parsedValue = [
+        'discountValue',
+        'usageLimit',
+        'validityPeriodInDays',
+      ].includes(name)
         ? Number(value)
         : value;
       setCoupon({
@@ -42,11 +48,11 @@ const AddMaGiamGia = (): JSX.Element => {
     e.preventDefault();
     handleStateApi(async () => {
       if (!coupon) return;
-      coupon.isActive= Boolean(coupon.isActive);
+      coupon.isActive = Boolean(coupon.isActive);
       const res = await create_coupon(coupon);
       if (res.statusCode === 200) {
-        toastMessage("Thêm mã khuyến mãi thành công", 'success');
-        navigate("/magiamgia");
+        toastMessage('Thêm mã khuyến mãi thành công', 'success');
+        navigate('/magiamgia');
       } else {
         toastMessage(res.message, 'error');
       }
@@ -57,7 +63,9 @@ const AddMaGiamGia = (): JSX.Element => {
     <div className="flex flex-col gap-9">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">Thêm một mã giảm giá mới</h3>
+          <h3 className="font-medium text-black dark:text-white">
+            Thêm một mã giảm giá mới
+          </h3>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="p-6.5">

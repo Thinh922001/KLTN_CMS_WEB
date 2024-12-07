@@ -3,19 +3,16 @@ import useFetch from '@/hooks/useFetch';
 import { IGetLowerProductStatics } from '@/Types/Statics';
 import { toastMessage } from '@/utils/toastHelper';
 import { Loader } from 'lucide-react';
-import React from 'react'
-const CardLowerSelling = ():JSX.Element=>{
-    const [stateApi, handleStateApi] = useFetch();
-const [take, setTake] = React.useState<number>(5);
-const [skip, setSkip] = React.useState<number>(0);
+import React from 'react';
+const CardLowerSelling = (): JSX.Element => {
+  const [stateApi, handleStateApi] = useFetch();
+  const [take, setTake] = React.useState<number>(5);
+  const [skip, setSkip] = React.useState<number>(0);
   const [list, setList] = React.useState<IGetLowerProductStatics[]>([]);
 
   const fetchTopSelling = () => {
     handleStateApi(async () => {
-      const res = await get_all_lower_selling_static(
-        take,
-        skip,
-      );
+      const res = await get_all_lower_selling_static(take, skip);
       if (res.statusCode === 200) {
         setList(res.data);
       } else {
@@ -23,7 +20,6 @@ const [skip, setSkip] = React.useState<number>(0);
       }
     });
   };
-
 
   React.useEffect(() => {
     fetchTopSelling();
@@ -60,7 +56,10 @@ const [skip, setSkip] = React.useState<number>(0);
           list.map((item, index) => (
             <div key={index} className="flex items-center gap-5">
               <b className="text-xl">#{index + 1}</b>
-              <span className="font-semibold">{item.productName} - {item.variationDetail?.size || " ? "} - {item.variationDetail?.color}</span>
+              <span className="font-semibold">
+                {item.productName} - {item.variationDetail?.size || ' ? '} -{' '}
+                {item.variationDetail?.color}
+              </span>
               <span>
                 Số lượng bán ra: <b>{item.quantity}</b>
               </span>
@@ -70,5 +69,5 @@ const [skip, setSkip] = React.useState<number>(0);
       </div>
     </div>
   );
-}
-export default CardLowerSelling
+};
+export default CardLowerSelling;

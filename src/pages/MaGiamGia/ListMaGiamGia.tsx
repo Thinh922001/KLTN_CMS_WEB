@@ -1,10 +1,5 @@
-import React from 'react';
-import Breadcrumb from '../../components/Breadcrumb';
-import TableOne from '../../components/TableOne';
-import useFetch from '@/hooks/useFetch';
-import { ICoupon, ICouponUpdate } from '@/Types/Coupon';
-import { useNavigate } from 'react-router-dom';
-import { toastMessage } from '@/utils/toastHelper';
+import { delete_coupon, get_all_coupon, update_coupon } from '@/api/coupon';
+import ModalBox from '@/components/ModalBox';
 import {
   Table,
   TableBody,
@@ -13,10 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChevronDown, Eye, Loader, Plus, Save, Trash } from 'lucide-react';
-import ModalBox from '@/components/ModalBox';
-import { delete_coupon, get_all_coupon, update_coupon } from '@/api/coupon';
+import useFetch from '@/hooks/useFetch';
+import { ICoupon, ICouponUpdate } from '@/Types/Coupon';
 import { formatDate } from '@/utils/formatDate';
+import { toastMessage } from '@/utils/toastHelper';
+import { ChevronDown, Eye, Loader, Plus, Save, Trash } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Breadcrumb from '../../components/Breadcrumb';
 const ListMaGiamGia = (): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
   const [stateApiAnorther, handleStateApiAnorther] = useFetch();
@@ -39,18 +38,19 @@ const ListMaGiamGia = (): JSX.Element => {
   const handleOpenModal = (cate: ICoupon) => {
     setOpenModal(true);
     setCoupon(cate);
-    setCouponUpdate(
-        {
-            code: cate.code,
-            discount_value: cate.discount_value,
-            discount_type: cate.discount_type,
-            is_active: cate.is_active,
-            usage_limit: cate.usage_limit,
-            validityPeriodInDays: cate.expiration_date 
-                ? Math.ceil((new Date(cate.expiration_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-                : 0,
-        }
-    )
+    setCouponUpdate({
+      code: cate.code,
+      discount_value: cate.discount_value,
+      discount_type: cate.discount_type,
+      is_active: cate.is_active,
+      usage_limit: cate.usage_limit,
+      validityPeriodInDays: cate.expiration_date
+        ? Math.ceil(
+            (new Date(cate.expiration_date).getTime() - new Date().getTime()) /
+              (1000 * 60 * 60 * 24),
+          )
+        : 0,
+    });
   };
 
   const handleOpenModelDelete = (cate: ICoupon) => {
@@ -74,7 +74,9 @@ const ListMaGiamGia = (): JSX.Element => {
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
@@ -84,10 +86,14 @@ const ListMaGiamGia = (): JSX.Element => {
         [name]: target.checked,
       });
     } else {
-      const parsedValue = ['discount_value', 'usage_limit', 'validityPeriodInDays'].includes(name)
+      const parsedValue = [
+        'discount_value',
+        'usage_limit',
+        'validityPeriodInDays',
+      ].includes(name)
         ? Number(value)
         : value;
-        setCouponUpdate({
+      setCouponUpdate({
         ...couponUpdate,
         [name]: parsedValue,
       });
@@ -101,7 +107,7 @@ const ListMaGiamGia = (): JSX.Element => {
       couponUpdate.discount_value = Number(couponUpdate.discount_value);
       const res = await update_coupon(coupon.id, couponUpdate);
       if (res.statusCode === 200) {
-        toastMessage("Chỉnh sửa mã khuyến mãi thành công", 'success');
+        toastMessage('Chỉnh sửa mã khuyến mãi thành công', 'success');
         setOpenModal(false);
       } else {
         toastMessage(res.message, 'error');
@@ -317,7 +323,6 @@ const ListMaGiamGia = (): JSX.Element => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
-
                 </div>
               </div>
             </div>

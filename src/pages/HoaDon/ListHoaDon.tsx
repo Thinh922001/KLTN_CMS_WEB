@@ -1,10 +1,3 @@
-import React from 'react';
-import Breadcrumb from '../../components/Breadcrumb';
-import TableOne from '../../components/TableOne';
-import { useNavigate } from 'react-router-dom';
-import useFetch from '@/hooks/useFetch';
-import { IKhachHang } from '@/Types/KhachHang';
-import { IPaging } from '@/Types/Pagging';
 import { get_all_user } from '@/api/user';
 import {
   Table,
@@ -14,8 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChevronLeft, ChevronRight, Eye, Loader } from 'lucide-react';
-import ModalBox from '@/components/ModalBox';
+import useFetch from '@/hooks/useFetch';
+import { IKhachHang } from '@/Types/KhachHang';
+import { IPaging } from '@/Types/Pagging';
+import { ChevronLeft, ChevronRight, Loader } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Breadcrumb from '../../components/Breadcrumb';
 import ItemHoaDonKhachHang from './ItemHoaDonKhachHang';
 const ListHoaDon = (): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();

@@ -1,8 +1,5 @@
 import { get_all_user, update_user } from '@/api/user';
 import Breadcrumb from '@/components/Breadcrumb';
-import ModalBox from '@/components/ModalBox';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -28,32 +25,29 @@ const ListKhachHang = (): JSX.Element => {
   const [skip, setSkip] = React.useState<number>(0);
   const [paging, setPaging] = React.useState<IPaging>();
   const navigate = useNavigate();
-    const handleOpenModal = (user: IKhachHang) => {
-        setKhachHang(user);
-        setOpenModal(true);
-        console.log(user);
-        
-    }
-    const handleSave = () => {
-        handleStateApiAnorther(async () => {
-            const res = await update_user({
-                id: khachHang?.id,
-                address: khachHang?.address,
-                gender: khachHang?.gender,
-                name: khachHang?.name
-            });
-            if (res.statusCode == 200) {
-                setKhachHang({name:"",
-                address:"",gender:"",
-                })
-                setOpenModal(false);
-                toastMessage("Chỉnh sửa thông tin thành công", 'success');
-                return;
-            } else {
-                toastMessage(res.message, 'error');
-            }
-        })
-    }
+  const handleOpenModal = (user: IKhachHang) => {
+    setKhachHang(user);
+    setOpenModal(true);
+    console.log(user);
+  };
+  const handleSave = () => {
+    handleStateApiAnorther(async () => {
+      const res = await update_user({
+        id: khachHang?.id,
+        address: khachHang?.address,
+        gender: khachHang?.gender,
+        name: khachHang?.name,
+      });
+      if (res.statusCode == 200) {
+        setKhachHang({ name: '', address: '', gender: '' });
+        setOpenModal(false);
+        toastMessage('Chỉnh sửa thông tin thành công', 'success');
+        return;
+      } else {
+        toastMessage(res.message, 'error');
+      }
+    });
+  };
   React.useEffect(() => {
     handleStateApi(async () => {
       const res = await get_all_user(take, skip);
@@ -65,7 +59,7 @@ const ListKhachHang = (): JSX.Element => {
         setListKhachHang([]);
       }
     });
-  }, [take,skip,stateApiAnorther.loading]);
+  }, [take, skip, stateApiAnorther.loading]);
   return (
     <>
       <Breadcrumb pageName="Danh sách khách hàng" />
@@ -75,7 +69,10 @@ const ListKhachHang = (): JSX.Element => {
           <select
             name=""
             id=""
-            onChange={(e) => {setTake(Number(e.target.value));setSkip(0)}}
+            onChange={(e) => {
+              setTake(Number(e.target.value));
+              setSkip(0);
+            }}
             className="p-2 rounded-md border border-stroke dark:border-strokedark border-black"
           >
             <option value={5}>5</option>

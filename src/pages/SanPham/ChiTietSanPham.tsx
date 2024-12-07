@@ -1,19 +1,14 @@
-import { get_all_brand } from '@/api/brand';
-import { get_all_category } from '@/api/category';
 import {
   get_product_by_id,
   update_product,
   upload_image_product,
 } from '@/api/product';
 import useFetch from '@/hooks/useFetch';
-import { IBrand } from '@/Types/Brand';
-import { ICategory } from '@/Types/Category';
-import { IProduct, IProductGet, IProductUpdate } from '@/Types/Product';
+import { IProductGet, IProductUpdate } from '@/Types/Product';
 import { toastMessage } from '@/utils/toastHelper';
-import { ChevronDown, Loader, LogIn } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import TableListProductDetai from './TableListProductDetail';
 import TableListProductDetail from './TableListProductDetail';
 const ChiTietSanPhamPage = (): JSX.Element => {
   const { id, brand_id, cate_id } = useParams();

@@ -1,23 +1,30 @@
-import React from 'react'
-import Breadcrumb from '../../components/Breadcrumb'
+import React from 'react';
+import Breadcrumb from '../../components/Breadcrumb';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '@/hooks/useFetch';
 import { IBrand, IBrandUpdate } from '@/Types/Brand';
 import { toastMessage } from '@/utils/toastHelper';
 import { Eye, Loader, Plus, Save, Trash } from 'lucide-react';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import ModalBox from '@/components/ModalBox';
 import { delete_brand, get_all_brand, update_brand } from '@/api/brand';
-const ListNhanHang = ():JSX.Element=>{
-    const [stateApi, handleStateApi] = useFetch();
+const ListNhanHang = (): JSX.Element => {
+  const [stateApi, handleStateApi] = useFetch();
   const [stateApiAnorther, handleStateApiAnorther] = useFetch();
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = React.useState<boolean>(false);
   const [brand, setBrand] = React.useState<IBrand | null>(null);
   const navigate = useNavigate();
-  const [listLoaiSanPham, setListLoaiSanPham] = React.useState<
-    IBrand[] | null
-  >(null);
+  const [listLoaiSanPham, setListLoaiSanPham] = React.useState<IBrand[] | null>(
+    null,
+  );
 
   const handleOpenModal = (cate: IBrand) => {
     setOpenModal(true);
@@ -60,7 +67,7 @@ const ListNhanHang = ():JSX.Element=>{
       const res = await delete_brand(brand.id);
       if (res.statusCode == 200) {
         setOpenModalDelete(false);
-        toastMessage("Xóa thành công", 'success');
+        toastMessage('Xóa thành công', 'success');
         return;
       } else {
         toastMessage(res.message, 'error');
@@ -230,5 +237,5 @@ const ListNhanHang = ():JSX.Element=>{
       </ModalBox>
     </>
   );
-}
-export default ListNhanHang
+};
+export default ListNhanHang;

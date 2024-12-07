@@ -1,21 +1,11 @@
-import { get_all_order_detail_by_order, update_order_status } from '@/api/order';
-import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+  get_all_order_detail_by_order,
+  update_order_status,
+} from '@/api/order';
+import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/useFetch';
 import { EOrderStatus } from '@/Types/order';
-import {
-  IProductDetailGetFromUser,
-  IProductDetailGetFromUserItem,
-} from '@/Types/ProductDetail';
+import { IProductDetailGetFromUser } from '@/Types/ProductDetail';
 import { formatMoney } from '@/utils/formatMoney';
 import { toastMessage } from '@/utils/toastHelper';
 import { Loader, X } from 'lucide-react';
@@ -32,20 +22,19 @@ const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
   const [productDetail, setProductDetail] =
     React.useState<IProductDetailGetFromUser>();
 
-
   const handleUpdateOrderStatus = async () => {
     console.log(status);
-    
+
     handleStateApi(async () => {
-        const res = await update_order_status(Number(orderId), status);
-        if (res.statusCode === 200) {
-          toastMessage('Cập nhập thành công trạng thái', 'success');
-          onClose();
-        }else{
-            toastMessage(res.message, 'error');
-        }
-    })
-}
+      const res = await update_order_status(Number(orderId), status);
+      if (res.statusCode === 200) {
+        toastMessage('Cập nhập thành công trạng thái', 'success');
+        onClose();
+      } else {
+        toastMessage(res.message, 'error');
+      }
+    });
+  };
 
   React.useEffect(() => {
     const fetch = () => {
@@ -102,28 +91,30 @@ const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
                 </span>
               </div>
               <div className="flex flex-col items-start gap-3">
-                    <label htmlFor="" className="font-bold">Trạng thái</label>
+                <label htmlFor="" className="font-bold">
+                  Trạng thái
+                </label>
                 <select
-                    name=""
-                    id=""
-                    value={status}
-                    onChange={(e) => {
+                  name=""
+                  id=""
+                  value={status}
+                  onChange={(e) => {
                     setStatus(e.target.value as EOrderStatus);
-                    }}
-                    className="p-2 w-full rounded-md border border-stroke dark:border-strokedark border-black"
+                  }}
+                  className="p-2 w-full rounded-md border border-stroke dark:border-strokedark border-black"
                 >
-                    <option value={EOrderStatus.PENDING}>Pending</option>
-                    <option value={EOrderStatus.DELIVERED}>Delivered</option>
-                    <option value={EOrderStatus.SHIPPED}>Shipped</option>
-                    <option value={EOrderStatus.CONFIRMED}>Confirmed</option>
-                    <option value={EOrderStatus.CANCELLED}>Cancelled</option>
-                    <option value={EOrderStatus.RETURNED}>Returned</option>
-                    <option value={EOrderStatus.REFUNDED}>Refunded</option>
+                  <option value={EOrderStatus.PENDING}>Pending</option>
+                  <option value={EOrderStatus.DELIVERED}>Delivered</option>
+                  <option value={EOrderStatus.SHIPPED}>Shipped</option>
+                  <option value={EOrderStatus.CONFIRMED}>Confirmed</option>
+                  <option value={EOrderStatus.CANCELLED}>Cancelled</option>
+                  <option value={EOrderStatus.RETURNED}>Returned</option>
+                  <option value={EOrderStatus.REFUNDED}>Refunded</option>
                 </select>
-                <div className='flex justify-end w-full'>
-                    <Button className='w-full' onClick={handleUpdateOrderStatus}>
-                        Cập nhập trạng thái
-                    </Button>
+                <div className="flex justify-end w-full">
+                  <Button className="w-full" onClick={handleUpdateOrderStatus}>
+                    Cập nhập trạng thái
+                  </Button>
                 </div>
               </div>
             </>

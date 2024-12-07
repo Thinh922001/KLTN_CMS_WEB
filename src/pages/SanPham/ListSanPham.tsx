@@ -18,13 +18,18 @@ import { ICategory } from '@/Types/Category';
 import { IBrand } from '@/Types/Brand';
 import { toastMessage } from '@/utils/toastHelper';
 import { IProduct } from '@/Types/Product';
-import { delete_product, get_all_product, restore_product } from '@/api/product';
+import {
+  delete_product,
+  get_all_product,
+  restore_product,
+} from '@/api/product';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { getValues } from '@/utils/object';
 const ListSanPham = (): JSX.Element => {
   const navigate = useNavigate();
   const [stateApi, handleStateApi] = useFetch();
@@ -52,7 +57,7 @@ const ListSanPham = (): JSX.Element => {
       }
       setReset(!reset);
     });
-  }
+  };
   React.useEffect(() => {
     const fetch = () => {
       handleStateApi(async () => {

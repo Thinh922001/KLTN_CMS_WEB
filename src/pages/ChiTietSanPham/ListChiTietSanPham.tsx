@@ -4,6 +4,7 @@ import {
   update_productDetail,
   upload_productDetail_image,
 } from '@/api/productDetail';
+import ImagePreview from '@/components/ImgReview';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import useFetch from '@/hooks/useFetch';
@@ -28,13 +29,17 @@ const ListChiTietSanPham = (): JSX.Element => {
     {},
   );
   const [listIdImg, setListIdImg] = React.useState<string[]>([]);
-  const [image, setImage] = React.useState<File | null>(null);
+  const [image, setImage] = React.useState<File[]>([]);
   const navigate = useNavigate();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+    if (e.target.files && e.target.files.length > 0) {
+      setImage([...image, ...Array.from(e.target.files)]);
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImage(image.filter((_, i) => i !== index));
   };
   const handleIconClick = () => {
     fileInputRef.current?.click();
@@ -59,14 +64,14 @@ const ListChiTietSanPham = (): JSX.Element => {
 
   const handleSubmitImage = () => {
     handleStateApi(async () => {
-      if (!image) {
+      if (!image.length) {
         toastMessage('Chưa có hình ảnh nào được tải lên', 'error');
         return;
       }
       const res = await upload_productDetail_image(Number(product_id), image);
       if (res.statusCode === 200) {
         toastMessage('Thêm hình ảnh cho sản phẩm thành công', 'success');
-        setImage(null);
+        setImage([]);
         setLoading((r) => !r);
       }
     });
@@ -183,41 +188,40 @@ const ListChiTietSanPham = (): JSX.Element => {
             )}
           </div>
         </div>
-        <div className="col-span-4 flex items-center flex-col justify-center">
-          <div
-            style={{
-              backgroundImage: image
-                ? `url(${URL.createObjectURL(image)})`
-                : '',
-            }}
-            className="border relative border-stroke w-full aspect-square bg-cover bg-no-repeat bg-center rounded-md"
-          >
-            <span
-              className="absolute w-12 h-12 rounded-full border border-solid flex items-center justify-center z-50 bottom-1 right-1 cursor-pointer bg-white"
-              onClick={handleIconClick}
-            >
-              <ImagePlus />
-            </span>
-          </div>
-          <div className="flex items-center justify-center py-4">
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-            />
-            <button
-              onClick={handleSubmitImage}
-              className="bg-black px-3 py-1 rounded-md text-white w-full"
-            >
-              {stateApi.loading ? (
-                <div className="flex items-center justify-center">
-                  <Loader className="animate-spin" />
-                </div>
-              ) : (
-                'Thêm hình ảnh vào sản phẩm'
-              )}
-            </button>
+        <div className="col-span-4 ">
+          <div className=" transform translate-y-[38%]">
+            <div className="border relative border-stroke w-full aspect-square bg-cover bg-no-repeat bg-center rounded-md max-h-[350px] overflow-y-auto">
+              <ImagePreview images={image} onRemove={handleRemoveImage} />
+
+              <span
+                className="absolute w-12 h-12 rounded-full border border-solid flex items-center justify-center z-50 bottom-1 right-1 cursor-pointer bg-white"
+                onClick={handleIconClick}
+              >
+                <ImagePlus />
+              </span>
+            </div>
+            <div className="">
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <button
+                onClick={handleSubmitImage}
+                className="bg-black px-3 py-1 rounded-md text-white w-full"
+              >
+                {stateApi.loading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader className="animate-spin" />
+                  </div>
+                ) : (
+                  'Thêm hình ảnh vào sản phẩm'
+                )}
+              </button>
+            </div>
           </div>
         </div>
         <div className="col-span-12">
@@ -240,7 +244,7 @@ const ListChiTietSanPham = (): JSX.Element => {
             </div>
             <div className="flex flex-col gap-2">
               <span>Giá cũ</span>
-              <Input 
+              <Input
                 value={productDetail?.oldPrice}
                 type="number"
                 onChange={(e) =>
@@ -253,7 +257,7 @@ const ListChiTietSanPham = (): JSX.Element => {
             </div>
             <div className="flex flex-col gap-2">
               <span>Phần trăm giảm</span>
-              <Input 
+              <Input
                 value={productDetail?.discountPercent}
                 type="number"
                 onChange={(e) =>
@@ -266,7 +270,7 @@ const ListChiTietSanPham = (): JSX.Element => {
             </div>
             <div className="flex flex-col gap-2">
               <span>Số lượng tồn tại</span>
-              <Input 
+              <Input
                 value={productDetail?.stock}
                 type="number"
                 onChange={(e) =>
@@ -278,14 +282,14 @@ const ListChiTietSanPham = (): JSX.Element => {
               />
             </div>
             <div className="col-span-2 py-3 flex items-center justify-center">
-              <Button className='' onClick={handleSubmitUpdate}>
-              {stateApiUpdate.loading ? (
-                <div className="flex items-center justify-center">
-                  <Loader className="animate-spin" />
-                </div>
-              ) : (
-                'Lưu thông tin'
-              )}
+              <Button className="" onClick={handleSubmitUpdate}>
+                {stateApiUpdate.loading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader className="animate-spin" />
+                  </div>
+                ) : (
+                  'Lưu thông tin'
+                )}
               </Button>
             </div>
           </div>

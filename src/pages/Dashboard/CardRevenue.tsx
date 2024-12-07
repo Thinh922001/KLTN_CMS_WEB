@@ -19,17 +19,21 @@ const CardRevenue = (): JSX.Element => {
       });
     };
     fetch();
-  }, [mode,year]);
+  }, [mode, year]);
   return (
     <div className="p-2 border border-black rounded-md flex flex-col gap-2">
       <span className="h-13 w-13 rounded-full bg-slate-100 flex items-center justify-center">
         <CircleDollarSign className="t" />
       </span>
       <span className="py-1 text-xl font-bold">
-        {stateApi.loading ? <Loader className="animate-spin" /> : formatMoney(revenue.toString())}
+        {stateApi.loading ? (
+          <Loader className="animate-spin" />
+        ) : (
+          formatMoney(revenue.toString())
+        )}
       </span>
       <span className="font-bold text-2xl">Tổng tiền doanh thu</span>
-      <div className='flex items-center gap-5'>
+      <div className="flex items-center gap-5">
         <label className="flex items-center gap-1">
           Chức năng:
           <select
