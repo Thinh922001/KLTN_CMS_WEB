@@ -2,29 +2,31 @@ import { get_all_brand } from '@/api/brand';
 import { get_all_category } from '@/api/category';
 import { create_product } from '@/api/product';
 import VariantForm from '@/components/VariantForm';
+import VariantItem from '@/components/VariantItem';
 import useFetch from '@/hooks/useFetch';
 import { IBrand } from '@/Types/Brand';
 import { ICategory } from '@/Types/Category';
 import { IProductCreate } from '@/Types/Product';
 import { generateIdWithAlphabet } from '@/utils/generateId';
+import { checkVariants, formattedVariants } from '@/utils/object';
 import { toastMessage } from '@/utils/toastHelper';
 import { ChevronDown, Loader, RefreshCcw } from 'lucide-react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
+
+interface Variant {
+  name: string;
+  images: string;
+  options: string;
+}
+
 const AddSanPham = (): JSX.Element => {
   const [productAdd, setProductAdd] = React.useState<IProductCreate>({
     productCode: generateIdWithAlphabet('SP', 10),
     tabs: [],
     productName: 'Tên sản phẩm',
     labelsId: [1],
-    variants: [
-      { name: 'size', images: [], options: ['256GB', '512GB', '1TB'] },
-      {
-        name: 'color',
-        images: ['#bab4a9', '#464749', '#4f5765', '#f2f1ec'],
-        options: ['Titan tự nhiên', 'Titan đen', 'Titan xanh', 'Titan trắng'],
-      },
-    ],
+    variants: [],
     totalVote: 25,
     starRate: 4.1,
     price: 8290000,
@@ -37,11 +39,20 @@ const AddSanPham = (): JSX.Element => {
   const [brandChoice, setBrandChoice] = React.useState<IBrand>();
   const [cate, setCate] = React.useState<ICategory[]>([]);
   const [brand, setBrand] = React.useState<IBrand[]>([]);
+  const [variants, setVariants] = React.useState<Variant[]>([]);
   const navigate = useNavigate();
   const [stateApi, handleStateApi] = useFetch();
+
   const handleSubmit = () => {
     handleStateApi(async () => {
-      const res = await create_product(productAdd);
+      const formattedVariantsData = formattedVariants(variants);
+      if (!formattedVariantsData.every((e) => checkVariants(e))) {
+        toastMessage('Biến thể không hợp lệ', 'error');
+        return;
+      }
+
+      const productAddRes = { ...productAdd, formattedVariantsData };
+      const res = await create_product(productAddRes);
       if (res.statusCode === 200) {
         toastMessage('Thêm sản phẩm thành công', 'success');
         navigate('/sanpham');
@@ -73,6 +84,34 @@ const AddSanPham = (): JSX.Element => {
     };
     fetch();
   }, []);
+
+  /*  hanlde logic variants */
+
+  const handleAddVariant = () => {
+    setVariants([...variants, { name: '', images: '', options: '' }]);
+  };
+
+  const handleVariantChange = (
+    index: number,
+    field: keyof Variant,
+    value: string,
+  ) => {
+    const updatedVariants = [...variants];
+    updatedVariants[index][field] = value;
+    setVariants(updatedVariants);
+  };
+
+  const handleRemoveVariant = (index: number) => {
+    setVariants(variants.filter((_, i) => i !== index));
+  };
+
+  const handleSubmitVariants = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formatted = formattedVariants(variants);
+    alert(JSON.stringify(formatted));
+  };
+
+  /* End logic variants */
   return (
     <>
       <div className="flex flex-col gap-9">
@@ -304,85 +343,37 @@ const AddSanPham = (): JSX.Element => {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 ></textarea>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {productAdd?.variants?.map((item, index) => (
-                  <div className="mb-4.5 flex flex-col gap-2" key={index}>
-                    <label htmlFor="" className="text-black font-bold">
-                      {item.name}
-                    </label>
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="">images</label>
-                      <div className="flex items-center gap-3 py-2">
-                        {item.images?.map((item, index) => (
-                          <span
-                            key={index}
-                            className="bg-black text-white px-2 py-1 text-sm rounded-full"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                      <input
-                        type="text"
-                        value={item.images?.join(', ')}
-                        onChange={(e) =>
-                          setProductAdd({
-                            ...productAdd,
-                            variants: productAdd?.variants?.map(
-                              (item, index) => {
-                                if (item.name === 'size') {
-                                  return {
-                                    ...item,
-                                    images: e.target.value.split(', '),
-                                  };
-                                }
-                                return item;
-                              },
-                            ),
-                          })
-                        }
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="">options</label>
-                      <div className="flex items-center gap-3 py-2">
-                        {item.options?.map((item, index) => (
-                          <span
-                            key={index}
-                            className="bg-black text-white px-2 py-1 text-sm rounded-full"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                      <input
-                        type="text"
-                        value={item.options?.join(', ')}
-                        onChange={(e) =>
-                          setProductAdd({
-                            ...productAdd,
-                            variants: productAdd?.variants?.map(
-                              (item, index) => {
-                                if (item.name === 'color') {
-                                  return {
-                                    ...item,
-                                    options: e.target.value.split(', '),
-                                  };
-                                }
-                                return item;
-                              },
-                            ),
-                          })
-                        }
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
 
-              <VariantForm />
+              {/* Logic variants */}
+
+              <form onSubmit={handleSubmitVariants} className="p-2">
+                {variants.map((variant, index) => (
+                  <VariantItem
+                    key={index}
+                    variant={variant}
+                    index={index}
+                    handleVariantChange={handleVariantChange}
+                    handleRemoveVariant={handleRemoveVariant}
+                  />
+                ))}
+
+                <button
+                  type="button"
+                  onClick={handleAddVariant}
+                  className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700"
+                >
+                  + Thêm biến thể mới
+                </button>
+
+                <button
+                  type="submit"
+                  className="ml-4 mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700"
+                >
+                  Test
+                </button>
+              </form>
+
+              {/* End logic variants */}
 
               <button
                 className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray"

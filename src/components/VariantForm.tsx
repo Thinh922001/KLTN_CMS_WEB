@@ -7,7 +7,7 @@ interface Variant {
   options: string;
 }
 
-function VariantForm() {
+const VariantForm = () => {
   const [variants, setVariants] = useState<Variant[]>([]);
 
   const handleAddVariant = () => {
@@ -66,6 +66,6 @@ function VariantForm() {
       </button>
     </form>
   );
-}
+};
 
 export default VariantForm;

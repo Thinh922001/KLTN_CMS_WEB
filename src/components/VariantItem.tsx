@@ -35,7 +35,7 @@ function VariantItem({
       />
 
       <label className="block text-gray-700 font-semibold">
-        Hình ảnh (mã HEX cách nhau bằng `,`):
+        Hình ảnh (mã màu hoặc link hình ảnh cách nhau bằng `,`):
       </label>
       <input
         type="text"
