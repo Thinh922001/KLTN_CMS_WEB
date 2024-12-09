@@ -44,9 +44,6 @@ const CardRevenue = (): JSX.Element => {
           >
             <option value={Mode.YEAR}>Năm</option>
             <option value={Mode.MONTH}>Tháng</option>
-            <option value={Mode.WEEK}>Tuần</option>
-            <option value={Mode.DAY}>Ngày</option>
-            <option value={Mode.QUARTER}>Quý</option>
             <option value={Mode.TODAY}>Ngày hôm nay</option>
           </select>
         </label>
