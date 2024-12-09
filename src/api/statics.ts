@@ -36,9 +36,10 @@ export const get_revenue_static = async (
   mode: Mode,
   year: number,
   month: number,
+  day: number,
 ) => {
   return await apiRequestRefeshToken(
-    `/stats/revenue?mode=${mode}&year=${year}&month=${month}`,
+    `/stats/revenue?mode=${mode}&year=${year}&month=${month}&day=${day}`,
     Method.GET,
   );
 };

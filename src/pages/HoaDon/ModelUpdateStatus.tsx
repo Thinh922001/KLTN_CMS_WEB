@@ -13,18 +13,19 @@ import React from 'react';
 export interface Props {
   orderId: number;
   onClose: () => void;
+  orderStatus: string;
 }
-const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
+const ModelUpdateStatus = ({
+  orderId,
+  onClose,
+  orderStatus,
+}: Props): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
-  const [status, setStatus] = React.useState<EOrderStatus>(
-    EOrderStatus.PENDING,
-  );
+  const [status, setStatus] = React.useState<string>(orderStatus);
   const [productDetail, setProductDetail] =
     React.useState<IProductDetailGetFromUser>();
 
   const handleUpdateOrderStatus = async () => {
-    console.log(status);
-
     handleStateApi(async () => {
       const res = await update_order_status(Number(orderId), status);
       if (res.statusCode === 200) {
@@ -49,6 +50,30 @@ const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
     };
     fetch();
   }, []);
+
+  const hanldeShowStatus = (status: string) => {
+    if (status === EOrderStatus.PENDING) {
+      return [EOrderStatus.CONFIRMED, EOrderStatus.CANCELLED];
+    }
+    if (status === EOrderStatus.CONFIRMED) {
+      return [EOrderStatus.SHIPPED, EOrderStatus.CANCELLED];
+    }
+    if (status === EOrderStatus.SHIPPED) {
+      return [EOrderStatus.DELIVERED, EOrderStatus.RETURNED];
+    }
+    if (status === EOrderStatus.DELIVERED) {
+      return [EOrderStatus.REFUNDED];
+    }
+    if (
+      status === EOrderStatus.REFUNDED ||
+      status === EOrderStatus.RETURNED ||
+      status === EOrderStatus.CANCELLED
+    ) {
+      return [];
+    }
+  };
+
+  const statusCanShow = hanldeShowStatus(orderStatus);
   return (
     <div className="absolute">
       <div
@@ -71,7 +96,7 @@ const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
             </div>
           ) : (
             <>
-              <div className="flex flex-col items-start gap-3">
+              <div className="flex flex-col items-start gap-3 p-2">
                 <span>
                   Mã hóa đơn: #<b>{orderId}</b>
                 </span>
@@ -89,34 +114,40 @@ const ModelUpdateStatus = ({ orderId, onClose }: Props): JSX.Element => {
                   Giá thanh toán cuối cùng:{' '}
                   <b>{formatMoney(productDetail?.finalAmount ?? '0')}</b>
                 </span>
+                <span>
+                  Trạng thái hiện tại: <b>{orderStatus}</b>
+                </span>
               </div>
-              <div className="flex flex-col items-start gap-3">
-                <label htmlFor="" className="font-bold">
-                  Trạng thái
-                </label>
-                <select
-                  name=""
-                  id=""
-                  value={status}
-                  onChange={(e) => {
-                    setStatus(e.target.value as EOrderStatus);
-                  }}
-                  className="p-2 w-full rounded-md border border-stroke dark:border-strokedark border-black"
-                >
-                  <option value={EOrderStatus.PENDING}>Pending</option>
-                  <option value={EOrderStatus.DELIVERED}>Delivered</option>
-                  <option value={EOrderStatus.SHIPPED}>Shipped</option>
-                  <option value={EOrderStatus.CONFIRMED}>Confirmed</option>
-                  <option value={EOrderStatus.CANCELLED}>Cancelled</option>
-                  <option value={EOrderStatus.RETURNED}>Returned</option>
-                  <option value={EOrderStatus.REFUNDED}>Refunded</option>
-                </select>
-                <div className="flex justify-end w-full">
-                  <Button className="w-full" onClick={handleUpdateOrderStatus}>
-                    Cập nhập trạng thái
-                  </Button>
+              {!statusCanShow?.length ? null : (
+                <div className="flex flex-col items-start gap-3">
+                  <label htmlFor="" className="font-bold">
+                    Thay đổi trạng thái
+                  </label>
+                  <select
+                    name=""
+                    id=""
+                    value={status}
+                    onChange={(e) => {
+                      setStatus(e.target.value as EOrderStatus);
+                    }}
+                    className="p-2 w-full rounded-md border border-stroke dark:border-strokedark border-black"
+                  >
+                    {statusCanShow.map((e, index) => (
+                      <option key={index} value={e}>
+                        {e}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="flex justify-end w-full">
+                    <Button
+                      className="w-full"
+                      onClick={handleUpdateOrderStatus}
+                    >
+                      Cập nhập trạng thái
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>

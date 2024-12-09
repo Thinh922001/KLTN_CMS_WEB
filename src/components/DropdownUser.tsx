@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import UserOne from '../images/user/user-01.png';
 import { toastMessage } from '../utils/toastHelper';
+import { getValueFromLocalStorageObject } from '@/utils/local-storage';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -27,9 +28,9 @@ const DropdownUser = () => {
   });
   const handleLogout = () => {
     localStorage.clear();
-    toastMessage("Đăng xuất thành công", "success");
-    navigate("/auth/signin")
-  }
+    toastMessage('Đăng xuất thành công', 'success');
+    navigate('/auth/signin');
+  };
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -50,9 +51,11 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {getValueFromLocalStorageObject('admin', 'name')}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">
+            {getValueFromLocalStorageObject('admin', 'roleName')}
+          </span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -87,7 +90,10 @@ const DropdownUser = () => {
           dropdownOpen === true ? 'block' : 'hidden'
         }`}
       >
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={handleLogout}>
+        <button
+          className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+          onClick={handleLogout}
+        >
           <svg
             className="fill-current"
             width="22"

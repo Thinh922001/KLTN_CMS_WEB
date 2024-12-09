@@ -57,57 +57,68 @@ const CardTopSelling = (): JSX.Element => {
           >
             <option value={Mode.YEAR}>Năm</option>
             <option value={Mode.MONTH}>Tháng</option>
-            <option value={Mode.WEEK}>Tuần</option>
             <option value={Mode.DAY}>Ngày</option>
-            <option value={Mode.QUARTER}>Quý</option>
             <option value={Mode.TODAY}>Ngày hôm nay</option>
           </select>
         </label>
-        <label className="flex items-center gap-1">
-          Năm:
-          <select
-            value={year}
-            onChange={(e) => setYear(parseInt(e.target.value, 10))}
-            className="p-1 border border-black rounded-md"
-          >
-            {Array.from({ length: 5 }).map((_, i) => (
-              <option key={i} value={2024 - i}>
-                {2024 - i}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex items-center gap-1">
-          Tháng:
-          <select
-            value={month}
-            onChange={(e) => setMonth(parseInt(e.target.value, 10))}
-            className="p-1 border border-black rounded-md"
-          >
-            <option value={-1}> -- Không chọn -- </option>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <option key={i} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex items-center gap-1">
-          Ngày:
-          <select
-            value={day}
-            onChange={(e) => setDay(parseInt(e.target.value, 10))}
-            className="p-1 border border-black rounded-md"
-          >
-            <option value={-1}> -- Không chọn -- </option>
+        {/* Năm */}
+        {mode === Mode.TODAY ? null : (
+          <label className="flex items-center gap-1">
+            Năm:
+            <select
+              value={year}
+              onChange={(e) => setYear(parseInt(e.target.value, 10))}
+              className="p-1 border border-black rounded-md"
+            >
+              {Array.from({ length: 5 }).map((_, i) => (
+                <option key={i} value={2024 - i}>
+                  {2024 - i}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
-            {getDaysInMonth(month, year).map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
-        </label>
+        {/* Tháng */}
+        {mode === Mode.MONTH || mode === Mode.DAY ? (
+          <label className="flex items-center gap-1">
+            Tháng:
+            <select
+              value={month}
+              onChange={(e) => setMonth(parseInt(e.target.value, 10))}
+              className="p-1 border border-black rounded-md"
+            >
+              <option value={-1}> -- Không chọn -- </option>
+              {Array.from({ length: 12 }).map((_, i) => (
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+
+        {/* Ngày */}
+        {mode == Mode.DAY ? (
+          <label className="flex items-center gap-1">
+            Ngày:
+            <select
+              value={day}
+              onChange={(e) => setDay(parseInt(e.target.value, 10))}
+              className="p-1 border border-black rounded-md"
+            >
+              <option value={-1}> -- Không chọn -- </option>
+
+              {getDaysInMonth(month, year).map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+
+        {/* Số lượng */}
         <label className="flex items-center gap-1">
           Số lượng
           <select

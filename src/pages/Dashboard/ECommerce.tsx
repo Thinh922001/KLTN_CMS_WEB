@@ -7,7 +7,10 @@ const ECommerce = () => {
     <>
       <h1 className="text-3xl font-bold text-center py-4">Thống kê</h1>
       <div className="grid grid-cols-2 gap-10">
-        <CardRevenue />
+        <div className="col-span-2">
+          <CardRevenue />
+        </div>
+
         <div className="col-span-2">
           <CardTopSelling />
         </div>

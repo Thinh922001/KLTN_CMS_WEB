@@ -175,6 +175,7 @@ const ItemHoaDonKhachHang = ({ item }: Props): JSX.Element => {
                                   <ModelUpdateStatus
                                     orderId={item.id || 0}
                                     onClose={() => setOpenModalIdUpdate(null)}
+                                    orderStatus={String(item.status)}
                                   />
                                 )}
                               </div>

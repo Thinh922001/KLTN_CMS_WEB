@@ -1,5 +1,5 @@
 import { get_all_order_by_user } from '@/api/order';
-import { get_user_by_id } from '@/api/user';
+import { get_user_by_id, update_user } from '@/api/user';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -82,6 +82,17 @@ const KhachHangChiTiet = (): JSX.Element => {
     fetch();
   }, [status, openModalIdUpdate]);
 
+  const handleUpdateCustomer = () => {
+    handleStateApi(async () => {
+      const res = await update_user(khachHang || {});
+      if (res.statusCode === 200) {
+        toastMessage('Cập nhật thông tin khách hàng thành công', 'success');
+      } else {
+        toastMessage('Có lỗi xảy ra', 'error');
+      }
+    });
+  };
+
   return (
     <div>
       <div className="flex gap-2 justify-between">
@@ -92,9 +103,7 @@ const KhachHangChiTiet = (): JSX.Element => {
           <ChevronLeft />
           <span> Trở về</span>
         </div>
-        <Button
-        // onClick={handleSave}
-        >
+        <Button onClick={handleUpdateCustomer}>
           {stateApiAnorther.loading ? (
             <Loader className="animate-spin text-white" />
           ) : (
@@ -234,6 +243,7 @@ const KhachHangChiTiet = (): JSX.Element => {
                             <ModelUpdateStatus
                               orderId={item.id || 0}
                               onClose={() => setOpenModalIdUpdate(null)}
+                              orderStatus={item.status || 'Pending'}
                             />
                           )}
                         </div>
