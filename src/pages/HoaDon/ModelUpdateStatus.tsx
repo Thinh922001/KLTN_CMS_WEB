@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/useFetch';
 import { EOrderStatus } from '@/Types/order';
 import { IProductDetailGetFromUser } from '@/Types/ProductDetail';
+import { hanldeShowStatus } from '@/utils/apiHelper';
 import { formatMoney } from '@/utils/formatMoney';
 import { toastMessage } from '@/utils/toastHelper';
 import { Loader, X } from 'lucide-react';
@@ -21,7 +22,9 @@ const ModelUpdateStatus = ({
   orderStatus,
 }: Props): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
-  const [status, setStatus] = React.useState<string>(orderStatus);
+  const [status, setStatus] = React.useState<string>(
+    hanldeShowStatus(orderStatus)[0] || 'Pending',
+  );
   const [productDetail, setProductDetail] =
     React.useState<IProductDetailGetFromUser>();
 
@@ -50,28 +53,6 @@ const ModelUpdateStatus = ({
     };
     fetch();
   }, []);
-
-  const hanldeShowStatus = (status: string) => {
-    if (status === EOrderStatus.PENDING) {
-      return [EOrderStatus.CONFIRMED, EOrderStatus.CANCELLED];
-    }
-    if (status === EOrderStatus.CONFIRMED) {
-      return [EOrderStatus.SHIPPED, EOrderStatus.CANCELLED];
-    }
-    if (status === EOrderStatus.SHIPPED) {
-      return [EOrderStatus.DELIVERED, EOrderStatus.RETURNED];
-    }
-    if (status === EOrderStatus.DELIVERED) {
-      return [EOrderStatus.REFUNDED];
-    }
-    if (
-      status === EOrderStatus.REFUNDED ||
-      status === EOrderStatus.RETURNED ||
-      status === EOrderStatus.CANCELLED
-    ) {
-      return [];
-    }
-  };
 
   const statusCanShow = hanldeShowStatus(orderStatus);
   return (
