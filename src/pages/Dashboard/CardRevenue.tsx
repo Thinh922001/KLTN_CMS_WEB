@@ -9,17 +9,18 @@ const CardRevenue = (): JSX.Element => {
   const [revenue, setRevenue] = React.useState<number>(0);
   const [mode, setMode] = React.useState<Mode>(Mode.YEAR);
   const [year, setYear] = React.useState<number>(2024);
+  const [month, setMonth] = React.useState<number>(new Date().getMonth());
   React.useEffect(() => {
     const fetch = () => {
       handleStateApi(async () => {
-        const res = await get_revenue_static(mode, year);
+        const res = await get_revenue_static(mode, year, month);
         if (res.statusCode === 200) {
           setRevenue(res.data.revenue);
         }
       });
     };
     fetch();
-  }, [mode, year]);
+  }, [mode, year, month]);
   return (
     <div className="p-2 border border-black rounded-md flex flex-col gap-2">
       <span className="h-13 w-13 rounded-full bg-slate-100 flex items-center justify-center">
@@ -59,6 +60,20 @@ const CardRevenue = (): JSX.Element => {
             {Array.from({ length: 5 }).map((_, i) => (
               <option key={i} value={2024 - i}>
                 {2024 - i}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex items-center gap-1">
+          Tháng:
+          <select
+            value={month}
+            onChange={(e) => setMonth(parseInt(e.target.value, 10))}
+            className="p-1 border border-black rounded-md"
+          >
+            {Array.from({ length: 12 }).map((_, i) => (
+              <option key={i} value={i + 1}>
+                {i + 1}
               </option>
             ))}
           </select>
