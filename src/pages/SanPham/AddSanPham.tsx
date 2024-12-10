@@ -51,7 +51,13 @@ const AddSanPham = (): JSX.Element => {
         return;
       }
 
-      const productAddRes = { ...productAdd, formattedVariantsData };
+      const productAddRes = {
+        ...productAdd,
+        formattedVariantsData,
+        cateId: brandChoice?.id,
+        brandId: brandChoice?.id,
+      };
+
       const res = await create_product(productAddRes);
       if (res.statusCode === 200) {
         toastMessage('Thêm sản phẩm thành công', 'success');
