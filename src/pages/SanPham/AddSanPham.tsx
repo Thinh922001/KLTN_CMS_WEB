@@ -53,7 +53,7 @@ const AddSanPham = (): JSX.Element => {
 
       const productAddRes = {
         ...productAdd,
-        formattedVariantsData,
+        variants: formattedVariantsData,
         cateId: cateChoice?.id,
         brandId: brandChoice?.id,
       };
