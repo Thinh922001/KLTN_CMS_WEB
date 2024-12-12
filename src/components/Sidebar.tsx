@@ -3,6 +3,7 @@ import {
   ChartBarStacked,
   ChartColumnStacked,
   ChevronUpIcon,
+  FileImage,
   Hexagon,
   LayoutGridIcon,
   Newspaper,
@@ -100,14 +101,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       ],
     },
     {
-      name: 'Loại sản phẩm',
+      name: 'Danh mục',
       href: '/loaisanpham',
       isChildren: true,
       icon: <ChartColumnStacked />,
       roles: ['ADMIN', 'SUPPER_ADMIN'],
       childrens: [
-        { name: 'Danh sách', href: '/loaisanpham' },
-        { name: 'Thêm loại sản phẩm', href: '/loaisanpham/add' },
+        { name: 'Danh sách danh mục', href: '/loaisanpham' },
+        { name: 'Thêm danh mục', href: '/loaisanpham/add' },
+        { name: 'Danh sách Loại danh mục', href: '/loaidanhuc' },
+        { name: 'Thêm loại danh mục', href: '/loaidanhuc/add' },
       ],
     },
     {
@@ -119,6 +122,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       childrens: [
         { name: 'Danh sách', href: '/sanpham' },
         { name: 'Thêm sản phẩm', href: '/sanpham/add' },
+      ],
+    },
+    {
+      name: 'Hiển thị',
+      href: '/banner',
+      isChildren: true,
+      icon: <FileImage />,
+      roles: ['ADMIN', 'SUPPER_ADMIN'],
+      childrens: [
+        { name: 'Banner', href: '/banner' },
+        { name: 'Banner danh mục', href: '/cate-banner' },
       ],
     },
   ];
@@ -201,9 +215,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {listNavbar.map((item) =>
+              {listNavbar.map((item, index) =>
                 item.isChildren && item.roles?.includes(roleName) ? (
-                  <SidebarLinkGroup activeCondition={pathname === item.href}>
+                  <SidebarLinkGroup
+                    key={index}
+                    activeCondition={pathname === item.href}
+                  >
                     {(handleClick, open) => {
                       return (
                         <React.Fragment>

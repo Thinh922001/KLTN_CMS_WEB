@@ -33,6 +33,14 @@ const ListKhachHang = lazy(() => import('../pages/KhachHang/ListKhachHang'));
 const KhachHangChiTiet = lazy(
   () => import('../pages/KhachHang/KhachHangChiTiet'),
 );
+const lisLoaiDanhMuc = lazy(
+  () => import('../pages/LoaiSanPham/ListLoaiDanhMuc'),
+);
+const AddLoaiDanhMuc = lazy(
+  () => import('../pages/LoaiSanPham/AddLoaiDanhMuc'),
+);
+const Banner = lazy(() => import('../pages/Banner/ListBanner'));
+const CateBanner = lazy(() => import('../pages/Banner/CateBanner'));
 const coreRoutes = [
   {
     path: '/',
@@ -163,6 +171,26 @@ const coreRoutes = [
     path: '/user/:id',
     title: 'Chi Tiết Khách Hàng',
     component: KhachHangChiTiet,
+  },
+  {
+    path: '/loaidanhuc',
+    title: 'Loại danh mục',
+    component: lisLoaiDanhMuc,
+  },
+  {
+    path: '/loaidanhuc/add',
+    title: 'Thêm loại danh mục',
+    component: AddLoaiDanhMuc,
+  },
+  {
+    path: '/banner',
+    title: 'Banner',
+    component: Banner,
+  },
+  {
+    path: '/cate-banner',
+    title: 'Banner danh mục',
+    component: CateBanner,
   },
 ];
 

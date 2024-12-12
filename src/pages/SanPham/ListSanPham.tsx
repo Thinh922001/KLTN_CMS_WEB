@@ -1,8 +1,10 @@
-import React from 'react';
-import Breadcrumb from '../../components/Breadcrumb';
-import TableOne from '../../components/TableOne';
-import { useNavigate } from 'react-router-dom';
-import { Eye, Loader, Plus, RefreshCcw, Trash } from 'lucide-react';
+import { get_all_brand } from '@/api/brand';
+import { get_all_category } from '@/api/category';
+import {
+  delete_product,
+  get_all_product,
+  restore_product,
+} from '@/api/product';
 import {
   Table,
   TableBody,
@@ -11,25 +13,21 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import useFetch from '@/hooks/useFetch';
-import { get_all_category } from '@/api/category';
-import { get_all_brand } from '@/api/brand';
-import { ICategory } from '@/Types/Category';
-import { IBrand } from '@/Types/Brand';
-import { toastMessage } from '@/utils/toastHelper';
-import { IProduct } from '@/Types/Product';
-import {
-  delete_product,
-  get_all_product,
-  restore_product,
-} from '@/api/product';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { getValues } from '@/utils/object';
+import useFetch from '@/hooks/useFetch';
+import { IBrand } from '@/Types/Brand';
+import { ICategory } from '@/Types/Category';
+import { IProduct } from '@/Types/Product';
+import { toastMessage } from '@/utils/toastHelper';
+import { Eye, Loader, Plus, RefreshCcw, Trash } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Breadcrumb from '../../components/Breadcrumb';
 const ListSanPham = (): JSX.Element => {
   const navigate = useNavigate();
   const [stateApi, handleStateApi] = useFetch();

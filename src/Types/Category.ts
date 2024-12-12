@@ -7,4 +7,19 @@ export interface ICategory {
 export interface ICategoryUpdate {
   cateId: number;
   name: string;
+  cateTypeId?: number;
+}
+
+export interface ICateType {
+  id: number;
+  name: string;
+}
+
+export interface ICateTypeUpdate {
+  id: number;
+  name: string;
+}
+
+export interface ICateTypeCreate {
+  name: string;
 }
