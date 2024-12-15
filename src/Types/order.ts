@@ -10,6 +10,17 @@ export interface IOrderUpdate {
   orderId?: number;
 }
 
+export interface IOrder {
+  id: number;
+  status: string;
+  total_amount: number;
+  shipping_address: string;
+  customer: {
+    id: number;
+    phone: string;
+  };
+}
+
 export enum EOrderStatus {
   ALL = 'All',
   PENDING = 'Pending',
@@ -19,4 +30,19 @@ export enum EOrderStatus {
   CANCELLED = 'Cancelled',
   RETURNED = 'Returned',
   REFUNDED = 'Refunded',
+}
+
+export enum OrderStatus {
+  ALL = '',
+  Pending = 'Pending',
+  Processing = 'Processing',
+  Returned = 'Returned',
+  Canceled = 'Canceled',
+  Completed = 'Completed',
+}
+
+export enum OrderReturnStatus {
+  Pending = 'Pending',
+  Resolved = 'Resolve',
+  Rejected = 'Rejected',
 }

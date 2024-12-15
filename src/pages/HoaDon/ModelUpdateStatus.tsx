@@ -4,7 +4,7 @@ import {
 } from '@/api/order';
 import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/useFetch';
-import { EOrderStatus } from '@/Types/order';
+import { EOrderStatus, OrderStatus } from '@/Types/order';
 import { IProductDetailGetFromUser } from '@/Types/ProductDetail';
 import { hanldeShowStatus } from '@/utils/apiHelper';
 import { formatMoney } from '@/utils/formatMoney';
@@ -23,7 +23,7 @@ const ModelUpdateStatus = ({
 }: Props): JSX.Element => {
   const [stateApi, handleStateApi] = useFetch();
   const [status, setStatus] = React.useState<string>(
-    hanldeShowStatus(orderStatus)[0] || 'Pending',
+    hanldeShowStatus()[0] || 'Pending',
   );
   const [productDetail, setProductDetail] =
     React.useState<IProductDetailGetFromUser>();
@@ -54,7 +54,7 @@ const ModelUpdateStatus = ({
     fetch();
   }, []);
 
-  const statusCanShow = hanldeShowStatus(orderStatus);
+  const statusCanShow = hanldeShowStatus();
   return (
     <div className="absolute">
       <div
@@ -109,7 +109,7 @@ const ModelUpdateStatus = ({
                     id=""
                     value={status}
                     onChange={(e) => {
-                      setStatus(e.target.value as EOrderStatus);
+                      setStatus(e.target.value as OrderStatus);
                     }}
                     className="p-2 w-full rounded-md border border-stroke dark:border-strokedark border-black"
                   >

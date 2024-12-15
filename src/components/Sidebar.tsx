@@ -76,7 +76,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       isChildren: true,
       icon: <Newspaper />,
       roles: ['ADMIN', 'SUPPER_ADMIN'],
-      childrens: [{ name: 'Danh sách', href: '/hoadon' }],
+      childrens: [
+        { name: 'Danh sách hóa đơn', href: '/list-hoadon' },
+        { name: 'Hóa đơn khách hàng', href: '/hoadon' },
+      ],
+    },
+    {
+      name: 'Đổi trả',
+      href: '/hoadon',
+      isChildren: true,
+      icon: <Newspaper />,
+      roles: ['ADMIN', 'SUPPER_ADMIN'],
+      childrens: [{ name: 'Danh sách đổi trả', href: '/doitra' }],
     },
     {
       name: 'Khuyến mãi',

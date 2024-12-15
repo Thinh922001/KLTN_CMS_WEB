@@ -1,4 +1,4 @@
-import { EOrderStatus } from '@/Types/order';
+import { EOrderStatus, OrderStatus } from '@/Types/order';
 
 export const apiRequest = async (url: string, method: string, body?: any) => {
   const path =
@@ -27,26 +27,12 @@ export const apiRequest = async (url: string, method: string, body?: any) => {
   return result;
 };
 
-export const hanldeShowStatus = (status: string): string[] => {
-  switch (status) {
-    case EOrderStatus.PENDING:
-      return [EOrderStatus.CONFIRMED, EOrderStatus.CANCELLED];
-
-    case EOrderStatus.CONFIRMED:
-      return [EOrderStatus.SHIPPED, EOrderStatus.CANCELLED];
-
-    case EOrderStatus.SHIPPED:
-      return [EOrderStatus.DELIVERED, EOrderStatus.RETURNED];
-
-    case EOrderStatus.DELIVERED:
-      return [EOrderStatus.REFUNDED];
-
-    case EOrderStatus.REFUNDED:
-    case EOrderStatus.RETURNED:
-    case EOrderStatus.CANCELLED:
-      return [];
-
-    default:
-      throw new Error(`Invalid order status: ${status}`);
-  }
+export const hanldeShowStatus = (): string[] => {
+  return [
+    OrderStatus.Canceled,
+    OrderStatus.Completed,
+    OrderStatus.Pending,
+    OrderStatus.Processing,
+    OrderStatus.Returned,
+  ];
 };

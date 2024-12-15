@@ -41,6 +41,8 @@ const AddLoaiDanhMuc = lazy(
 );
 const Banner = lazy(() => import('../pages/Banner/ListBanner'));
 const CateBanner = lazy(() => import('../pages/Banner/CateBanner'));
+const LisHoaDonAlll = lazy(() => import('../pages/HoaDon/AllHoaDon'));
+const DoiTra = lazy(() => import('../pages/DoiTra/ListDoiTra'));
 const coreRoutes = [
   {
     path: '/',
@@ -191,6 +193,16 @@ const coreRoutes = [
     path: '/cate-banner',
     title: 'Banner danh mục',
     component: CateBanner,
+  },
+  {
+    path: '/list-hoadon',
+    title: 'Banner danh mục',
+    component: LisHoaDonAlll,
+  },
+  {
+    path: '/doitra',
+    title: 'Banner danh mục',
+    component: DoiTra,
   },
 ];
 
