@@ -34,20 +34,7 @@ const ListDoiTra = (): JSX.Element => {
   const [listKhachHang, setListKhachHang] = React.useState<ReturnOrder[]>([]);
   const [take, setTake] = React.useState<number>(5);
   const [skip, setSkip] = React.useState<number>(0);
-  const [idChoice, setIdChoice] = React.useState<number>(0);
   const [paging, setPaging] = React.useState<IPaging>();
-
-  const handleOpenModal = (userId: number) => {
-    setOpenModalId((prevId) => (prevId === userId ? null : userId));
-  };
-  const handleOpenModalUpdate = (userId: number) => {
-    setOpenModalIdUpdate((prevId) => (prevId === userId ? null : userId));
-  };
-
-  const [openModalId, setOpenModalId] = React.useState<number | null>(null);
-  const [openModalIdUpdate, setOpenModalIdUpdate] = React.useState<
-    number | null
-  >(null);
 
   const [status, setStatus] = React.useState<OrderReturnStatus>(
     OrderReturnStatus.Pending,
@@ -57,19 +44,20 @@ const ListDoiTra = (): JSX.Element => {
     setStatus(status);
   };
 
-  const hanldeCallChangeStatus = (status: OrderReturnStatus) => {
-    const fetch = () => {
-      handleStateApiAnorther(async () => {
-        if (!idChoice) return;
-        const res = await change_status_return_order(idChoice, status);
-        if (res.statusCode == 200) {
-          toastMessage('Cập nhật đổi trả thành công', 'success');
-        } else {
-          toastMessage(res.message, 'error');
-        }
-      });
-    };
-    fetch();
+  const handleStatusChange = (id: number, status: OrderReturnStatus) => {
+    hanldeCallChangeStatus(id, status);
+  };
+
+  const hanldeCallChangeStatus = (id: number, status: OrderReturnStatus) => {
+    handleStateApiAnorther(async () => {
+      if (!id) return;
+      const res = await change_status_return_order(id, status);
+      if (res.statusCode === 200) {
+        toastMessage('Cập nhật đổi trả thành công', 'success');
+      } else {
+        toastMessage(res.message, 'error');
+      }
+    });
   };
 
   React.useEffect(() => {
@@ -190,22 +178,22 @@ const ListDoiTra = (): JSX.Element => {
                             <DropdownMenuLabel>Cập nhật</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                              onClick={() => {
-                                setIdChoice(item.id);
-                                hanldeCallChangeStatus(
+                              onClick={() =>
+                                handleStatusChange(
+                                  item.id,
                                   OrderReturnStatus.Resolved,
-                                );
-                              }}
+                                )
+                              }
                             >
                               Giải quyết
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => {
-                                setIdChoice(item.id);
-                                hanldeCallChangeStatus(
-                                  OrderReturnStatus.Resolved,
-                                );
-                              }}
+                              onClick={() =>
+                                handleStatusChange(
+                                  item.id,
+                                  OrderReturnStatus.Rejected,
+                                )
+                              }
                             >
                               Từ chối
                             </DropdownMenuItem>
