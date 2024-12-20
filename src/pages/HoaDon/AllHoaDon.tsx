@@ -8,12 +8,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import useFetch from '@/hooks/useFetch';
-import { IKhachHang } from '@/Types/KhachHang';
 import { IOrder, OrderStatus } from '@/Types/order';
 import { IPaging } from '@/Types/Pagging';
 import { ChevronLeft, ChevronRight, Ellipsis, Loader } from 'lucide-react';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
 
 import {

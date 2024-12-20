@@ -17,6 +17,7 @@ import {
   change_status_return_order,
   get_all_return_order,
 } from '@/api/rerurn-order';
+import ImageGallery from '@/components/LightBox';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -128,6 +129,7 @@ const ListDoiTra = (): JSX.Element => {
               <TableHead>Số lượng</TableHead>
               <TableHead>Giá trị hoàn trả</TableHead>
               <TableHead>Lý do</TableHead>
+              <TableHead>Hình ảnh</TableHead>
               <TableHead>Tình trạng</TableHead>
               <TableHead>Đã hoàn tiền</TableHead>
               <TableHead>Hành động</TableHead>
@@ -163,6 +165,11 @@ const ListDoiTra = (): JSX.Element => {
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>{item.returnPrice.toLocaleString()}</TableCell>
                   <TableCell>{item.reason}</TableCell>
+                  <TableCell>
+                    {item.img.length > 0 ? (
+                      <ImageGallery images={item.img} />
+                    ) : null}
+                  </TableCell>
                   <TableCell>{item.status}</TableCell>
                   <TableCell>
                     {item.isApprove ? 'Đã hoàn trả' : 'Chưa hoàn trả'}

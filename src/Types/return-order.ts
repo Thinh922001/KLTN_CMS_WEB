@@ -7,4 +7,5 @@ export interface ReturnOrder {
   returnPrice: number;
   phone: string;
   productName: string;
+  img: string[];
 }
