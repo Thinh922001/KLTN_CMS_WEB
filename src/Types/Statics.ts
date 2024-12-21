@@ -16,3 +16,16 @@ export interface IGetLowerProductStatics {
     color?: string;
   };
 }
+
+export interface RevenueData {
+  date?: string;
+  year?: number;
+  month?: number;
+  quarter?: number;
+  totalRevenue: number;
+}
+
+export interface RevenueChartProps {
+  data: RevenueData[];
+  mode: 'date' | 'month' | 'quarter';
+}
