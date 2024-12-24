@@ -75,10 +75,10 @@ const ListDoiTra = (): JSX.Element => {
   }, [take, skip, stateApiAnorther.loading, status]);
   return (
     <>
-      <Breadcrumb pageName="Danh sách hóa đơn" />
+      <Breadcrumb pageName="Danh sách đổi trả" />
       <div className="grid grid-cols-4">
         <div className="flex flex-col gap-2 ">
-          <span className="font-bold">Lấy số lượng hóa đơn</span>
+          <span className="font-bold">Lấy số lượng danh sách đổi trả</span>
           <select
             name=""
             id=""
